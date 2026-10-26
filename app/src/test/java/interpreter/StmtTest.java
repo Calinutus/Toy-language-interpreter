@@ -8,7 +8,6 @@ import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
 import interpreter.model.exp.ValueExp;
 import interpreter.model.stmt.*;
-import interpreter.model.type.BoolType;
 import interpreter.model.type.IntType;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
@@ -65,5 +64,33 @@ public class StmtTest {
 
         assertEquals(stmt1, state.getExeStack().pop());
         assertEquals(stmt2, state.getExeStack().pop());
+    }
+    @Test
+    void testPrintStmt() throws MyException {
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        IStmt print = new PrintStmt(new ValueExp(new IntValue(100)));
+        print.execute(state);
+
+        assertEquals(1, state.getOut().size());
+        assertEquals(new IntValue(100), state.getOut().get(0));
+    }
+
+    @Test
+    void testIfStmt() throws MyException {
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        IStmt thenStmt = new AssignStmt("x", new ValueExp(new IntValue(1)));
+        IStmt elseStmt = new AssignStmt("x", new ValueExp(new IntValue(2)));
+
+        IStmt ifTrue = new IfStmt(new ValueExp(new BoolValue(true)), thenStmt, elseStmt);
+        ifTrue.execute(state);
+        assertEquals(thenStmt, state.getExeStack().pop());
+
+
+        IStmt ifFalse = new IfStmt(new ValueExp(new BoolValue(false)), thenStmt, elseStmt);
+        ifFalse.execute(state);
+        assertEquals(elseStmt, state.getExeStack().pop());
+
+        IStmt ifInvalid = new IfStmt(new ValueExp(new IntValue(5)), thenStmt, elseStmt);
+        assertThrows(MyException.class, () -> ifInvalid.execute(state));
     }
 }
