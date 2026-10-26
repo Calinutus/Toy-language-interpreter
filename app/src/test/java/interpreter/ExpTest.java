@@ -1,6 +1,7 @@
 package interpreter;
 
 import interpreter.exceptions.ExpressionException;
+import interpreter.exceptions.MyException;
 import interpreter.model.adt.MyDictionary;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.exp.*;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpTest {
 
     @Test
-    void testValueExp() throws ExpressionException {
+    void testValueExp() throws MyException {
         IExp exp = new ValueExp(new IntValue(10));
         IDictionary<String, IValue> symTable = new MyDictionary<>();
         IValue val = exp.eval(symTable);
@@ -22,7 +23,7 @@ class ExpTest {
     }
 
     @Test
-    void testVarExp() throws ExpressionException {
+    void testVarExp() throws MyException {
         IExp exp = new VarExp("v");
         IDictionary<String, IValue> symTable = new MyDictionary<>();
 
@@ -37,7 +38,7 @@ class ExpTest {
     }
 
     @Test
-    void testArithExp() throws ExpressionException {
+    void testArithExp() throws MyException {
         // (2 + 3) * 4
         IExp exp1 = new ArithExp(
                 ArithOp.MUL,
@@ -87,7 +88,7 @@ class ExpTest {
     }
 
     @Test
-    void testLogicExp() throws ExpressionException {
+    void testLogicExp() throws MyException {
         // t and f
         IExp exp1 = new LogicExp(
                 LogicOp.AND,

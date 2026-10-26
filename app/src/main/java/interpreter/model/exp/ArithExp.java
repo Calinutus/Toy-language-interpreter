@@ -1,6 +1,7 @@
 package interpreter.model.exp;
 
 import interpreter.exceptions.ExpressionException;
+import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.type.IntType;
 import interpreter.model.value.IValue;
@@ -8,7 +9,7 @@ import interpreter.model.value.IntValue;
 
 public record ArithExp(ArithOp op, IExp left, IExp right) implements IExp {
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws ExpressionException {
+    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
         IValue v1 = left.eval(symTable);
         if (!v1.getType().equals(new IntType()))
             throw new ExpressionException("first operand is not an integer");
