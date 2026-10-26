@@ -29,7 +29,7 @@ public class DictionaryTest {
     }
 
     @Test
-    void testUpdate(){
+    void testUpdate() throws ADTException {
         IDictionary<String , Integer> dict = new MyDictionary<>();
         dict.put("a" , 10);
         dict.put("b" , 20);

@@ -19,7 +19,7 @@ class StackTest {
     }
 
     @Test
-    void testPop(){
+    void testPop() throws ADTException {
         IStack<Integer> stack = new MyStack<>();
         stack.push(10);
         assertEquals(10 , stack.pop() , "The value should be the 10");
@@ -32,7 +32,7 @@ class StackTest {
     }
 
     @Test
-    void testLifo(){
+    void testLifo() throws ADTException {
         IStack<Integer> stack = new MyStack<>();
         stack.push(10);
         stack.push(20);

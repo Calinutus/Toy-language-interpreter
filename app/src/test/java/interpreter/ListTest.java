@@ -18,7 +18,7 @@ public class ListTest {
     }
 
     @Test
-    void testGet(){
+    void testGet() throws ADTException {
         IList<String> list = new MyList<>();
         list.add("apple");
         list.add("orange");

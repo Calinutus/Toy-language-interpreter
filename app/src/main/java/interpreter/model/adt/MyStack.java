@@ -12,7 +12,7 @@ public class MyStack<T> implements IStack<T> {
     public void push (T  v){stack.push(v);}
 
     @Override
-    public T pop(){
+    public T pop() throws ADTException {
         if(stack.isEmpty()) throw new ADTException("Pop from an empty stack");
         return stack.pop();
     }

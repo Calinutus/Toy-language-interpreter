@@ -1,6 +1,6 @@
 package interpreter.exceptions;
 
-public class ExpressionException extends RuntimeException {
+public class ExpressionException extends MyException {
     public ExpressionException(String message) {
         super(message);
     }
