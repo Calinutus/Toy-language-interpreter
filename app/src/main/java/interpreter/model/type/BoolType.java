@@ -1,13 +1,21 @@
 package interpreter.model.type;
 
-import com.sun.jdi.BooleanValue;
-import interpreter.model.value.IValue;
 import interpreter.model.value.BoolValue;
+import interpreter.model.value.IValue;
 
-public record BoolType() implements IType {
+public class BoolType implements IType {
     @Override
-    public IValue defaultValue(){return new BoolValue(false);}
+    public boolean equals(Object anotherType) {
+        return anotherType instanceof BoolType;
+    }
 
     @Override
-    public String toString(){return "bool";}
+    public IValue defaultValue() {
+        return new BoolValue(false);
+    }
+
+    @Override
+    public String toString() {
+        return "bool";
+    }
 }
