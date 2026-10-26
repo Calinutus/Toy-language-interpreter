@@ -25,5 +25,14 @@ class TypeTest {
         assertEquals(new BoolValue(false) , defaultValue);
     }
 
+    @Test
+    void typeToStringReturnsCorrect(){
+        IType intType = new IntType();
+        IType boolType = new BoolType();
+
+        assertEquals("int" , intType.toString());
+        assertEquals("bool" , boolType.toString());
+    }
+
 
 }
