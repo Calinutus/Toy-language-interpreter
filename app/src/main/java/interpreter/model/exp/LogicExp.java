@@ -1,6 +1,6 @@
 package interpreter.model.exp;
 
-import interpreter.exceptions.MyException;
+import interpreter.exceptions.ExpressionException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.type.BoolType;
 import interpreter.model.value.BoolValue;
@@ -8,13 +8,13 @@ import interpreter.model.value.IValue;
 
 public record LogicExp(LogicOp op, IExp left, IExp right) implements IExp {
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
+    public IValue eval(IDictionary<String, IValue> symTable) throws ExpressionException {
         IValue v1 = left.eval(symTable);
         if (!v1.getType().equals(new BoolType()))
-            throw new MyException("first operand is not a boolean");
+            throw new ExpressionException("first operand is not a boolean");
         IValue v2 = right.eval(symTable);
         if (!v2.getType().equals(new BoolType()))
-            throw new MyException("second operand is not a boolean");
+            throw new ExpressionException("second operand is not a boolean");
 
         BoolValue b1 = (BoolValue) v1;
         BoolValue b2 = (BoolValue) v2;

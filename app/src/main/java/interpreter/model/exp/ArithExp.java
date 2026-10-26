@@ -1,6 +1,6 @@
 package interpreter.model.exp;
 
-import interpreter.exceptions.MyException;
+import interpreter.exceptions.ExpressionException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.type.IntType;
 import interpreter.model.value.IValue;
@@ -8,13 +8,13 @@ import interpreter.model.value.IntValue;
 
 public record ArithExp(ArithOp op, IExp left, IExp right) implements IExp {
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
+    public IValue eval(IDictionary<String, IValue> symTable) throws ExpressionException {
         IValue v1 = left.eval(symTable);
         if (!v1.getType().equals(new IntType()))
-            throw new MyException("first operand is not an integer");
+            throw new ExpressionException("first operand is not an integer");
         IValue v2 = right.eval(symTable);
         if (!v2.getType().equals(new IntType()))
-            throw new MyException("second operand is not an integer");
+            throw new ExpressionException("second operand is not an integer");
 
         IntValue i1 = (IntValue) v1;
         IntValue i2 = (IntValue) v2;
@@ -26,7 +26,7 @@ public record ArithExp(ArithOp op, IExp left, IExp right) implements IExp {
             case SUB -> new IntValue(n1 - n2);
             case MUL -> new IntValue(n1 * n2);
             case DIV -> {
-                if (n2 == 0) throw new MyException("division by zero");
+                if (n2 == 0) throw new ExpressionException("division by zero");
                 yield new IntValue(n1 / n2);
             }
         };

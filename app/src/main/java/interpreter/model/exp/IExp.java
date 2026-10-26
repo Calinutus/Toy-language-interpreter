@@ -1,9 +1,9 @@
 package interpreter.model.exp;
 
-import interpreter.exceptions.MyException;
+import interpreter.exceptions.ExpressionException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.value.IValue;
 
 public interface IExp {
-    IValue eval(IDictionary<String , IValue> tbl) throws MyException;
+    IValue eval(IDictionary<String , IValue> tbl) throws ExpressionException;
 }
