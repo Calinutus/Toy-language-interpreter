@@ -113,4 +113,25 @@ class ExpTest {
         IValue val2 = exp2.eval(symTable);
         assertEquals(new BoolValue(true) , val2);
     }
+
+    @Test
+    void testArithNonIntegerOperand(){
+        IExp exp = new ArithExp(ArithOp.ADD , new ValueExp(new IntValue(2)) , new ValueExp(new BoolValue(true)));
+        IDictionary<String , IValue> symTable = new MyDictionary<>();
+        assertThrows(MyException.class , () -> {exp.eval(symTable);});
+    }
+
+    @Test
+    void testLogicNonBooleanOperand(){
+        IExp exp = new LogicExp(LogicOp.AND , new ValueExp(new IntValue(1)) , new ValueExp(new IntValue(2)));
+        IDictionary<String , IValue> symTable = new MyDictionary<>();
+        assertThrows(MyException.class, () -> {exp.eval(symTable);});
+    }
+
+    @Test
+    void testUndefinedVariableExp(){
+        IExp exp = new VarExp("undefinedVar");
+        IDictionary<String, IValue> symTable = new MyDictionary<>();
+        assertThrows(MyException.class, () -> exp.eval(symTable));
+    }
 }
