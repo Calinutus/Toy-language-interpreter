@@ -29,16 +29,17 @@ public class Controller {
 
     public void allStep() throws MyException {
         PrgState prg = repo.getCurrentPrg();
-        display(prg);
+        displayCurrentState(prg);
         while (!prg.getExeStack().isEmpty()) {
             oneStep(prg);
-            display(prg);
+            displayCurrentState(prg);
         }
     }
 
-    private void display(PrgState state) {
+    private void displayCurrentState(PrgState state) {
         if (displayFlag) {
             System.out.println(state.toString());
+            System.out.println("----------------------------------------");
         }
     }
 
