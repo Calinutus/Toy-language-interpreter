@@ -1,5 +1,6 @@
 package interpreter;
 
+import interpreter.controller.Controller;
 import interpreter.exceptions.MyException;
 import interpreter.model.PrgState;
 import interpreter.model.adt.IDictionary;
@@ -12,6 +13,8 @@ import interpreter.model.type.IntType;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
+import interpreter.repository.IRepository;
+import interpreter.repository.Repository;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,10 +90,23 @@ public class StmtTest {
 
 
         IStmt ifFalse = new IfStmt(new ValueExp(new BoolValue(false)), thenStmt, elseStmt);
-        ifFalse.execute(state);
+            ifFalse.execute(state);
         assertEquals(elseStmt, state.getExeStack().pop());
 
         IStmt ifInvalid = new IfStmt(new ValueExp(new IntValue(5)), thenStmt, elseStmt);
         assertThrows(MyException.class, () -> ifInvalid.execute(state));
+    }
+
+    @Test
+    void testAssignmentTypeMismatch() {
+        IStmt ex = new CompStmt(
+                new VarDeclStmt("v", new IntType()),
+                new AssignStmt("v", new ValueExp(new BoolValue(true)))
+        );
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex);
+        IRepository repo = new Repository(state);
+        Controller controller = new Controller(repo);
+
+        assertThrows(MyException.class, controller::allStep);
     }
 }
