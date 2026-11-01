@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import interpreter.model.type.BoolType;
 import interpreter.model.type.IType;
 import interpreter.model.type.IntType;
+import interpreter.model.type.StringType;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
+import interpreter.model.value.StringValue;
 import org.junit.jupiter.api.Test;
 
 class TypeTest {
@@ -26,13 +28,20 @@ class TypeTest {
     }
 
     @Test
+    void stringTypeDefaultValueIsEmpty(){
+        IType stringType = new StringType();
+        IValue defaultValue = stringType.defaultValue();
+        assertEquals(new StringValue("") , defaultValue);
+    }
+
+    @Test
     void typeToStringReturnsCorrect(){
         IType intType = new IntType();
         IType boolType = new BoolType();
+        IType stringType = new StringType();
 
         assertEquals("int" , intType.toString());
         assertEquals("bool" , boolType.toString());
+        assertEquals("string" , stringType.toString());
     }
-
-
 }
