@@ -14,17 +14,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RepoTest {
     @Test
     void testGetCrtPrg() {
-        PrgState initialState = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState initialState = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IRepository repo = new Repository(initialState);
         assertEquals(initialState, repo.getCurrentPrg());
     }
 
     @Test
     void testAddState(){
-        PrgState initialState = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState initialState = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IRepository repo = new Repository(initialState);
 
-        PrgState secondState = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState secondState = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
 
         repo.add(secondState);
         assertEquals(initialState , repo.getCurrentPrg());

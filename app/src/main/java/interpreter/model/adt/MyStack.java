@@ -3,7 +3,9 @@ package interpreter.model.adt;
 import interpreter.exceptions.ADTException;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 public class MyStack<T> implements IStack<T> {
     private final Deque<T> stack = new ArrayDeque<>();
@@ -23,4 +25,10 @@ public class MyStack<T> implements IStack<T> {
     @Override
     public String toString(){return stack.toString();}
 
+    @Override
+    public List<T> toList() {
+        List<T> list = new ArrayList<>(stack);
+        java.util.Collections.reverse(list);
+        return list;
+    }
 }

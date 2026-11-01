@@ -31,7 +31,7 @@ public class ControllerTest {
                 new CompStmt(new AssignStmt("v", new ValueExp(new IntValue(2))),
                         new PrintStmt(new VarExp("v"))));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex1);
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex1);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -57,7 +57,7 @@ public class ControllerTest {
                                                 new ValueExp(new IntValue(1)))),
                                         new PrintStmt(new VarExp("b"))))));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex2);
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex2);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -81,7 +81,7 @@ public class ControllerTest {
                                         new AssignStmt("v", new ValueExp(new IntValue(3)))),
                                         new PrintStmt(new VarExp("v"))))));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex3);
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex3);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -107,7 +107,7 @@ public class ControllerTest {
                 )
         );
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), divisionByZero);
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), divisionByZero);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -116,7 +116,7 @@ public class ControllerTest {
 
     @Test
     void testOneStepEmptyStackThrowsException() throws ADTException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>() , new NopStmt());
         state.getExeStack().pop();
 
         IRepository repo = new Repository(state);

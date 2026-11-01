@@ -9,5 +9,5 @@ public interface IList<T> {
     T get(int index) throws ADTException;
     int size();
     boolean isEmpty();
-    List<T> getContent();
+    List<T> toList();
 }

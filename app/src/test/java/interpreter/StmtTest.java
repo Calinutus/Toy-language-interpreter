@@ -23,7 +23,7 @@ public class StmtTest {
 
     @Test
     void testNopStmt() throws MyException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IStmt nop = new NopStmt();
         PrgState resultState = nop.execute(state);
         assertSame(state, resultState);
@@ -31,7 +31,7 @@ public class StmtTest {
 
     @Test
     void testVarDeclStmt() throws MyException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IStmt varDecl = new VarDeclStmt("v", new IntType());
         varDecl.execute(state);
 
@@ -45,7 +45,7 @@ public class StmtTest {
     void testAssignStmt() throws MyException {
         IDictionary<String, IValue> symTable = new MyDictionary<>();
         symTable.put("v", new IntValue(0));
-        PrgState testState = new PrgState(new MyStack<>(), symTable, new MyList<>(), new NopStmt());
+        PrgState testState = new PrgState(new MyStack<>(), symTable, new MyList<>(), new MyDictionary<>(), new NopStmt());
 
         IStmt assign = new AssignStmt("v", new ValueExp(new IntValue(42)));
         assign.execute(testState);
@@ -58,7 +58,7 @@ public class StmtTest {
 
     @Test
     void testCompStmt() throws MyException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IStmt stmt1 = new VarDeclStmt("a", new IntType());
         IStmt stmt2 = new AssignStmt("a", new ValueExp(new IntValue(10)));
         IStmt comp = new CompStmt(stmt1, stmt2);
@@ -68,9 +68,10 @@ public class StmtTest {
         assertEquals(stmt1, state.getExeStack().pop());
         assertEquals(stmt2, state.getExeStack().pop());
     }
+
     @Test
     void testPrintStmt() throws MyException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IStmt print = new PrintStmt(new ValueExp(new IntValue(100)));
         print.execute(state);
 
@@ -80,7 +81,7 @@ public class StmtTest {
 
     @Test
     void testIfStmt() throws MyException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), new NopStmt());
         IStmt thenStmt = new AssignStmt("x", new ValueExp(new IntValue(1)));
         IStmt elseStmt = new AssignStmt("x", new ValueExp(new IntValue(2)));
 
@@ -88,9 +89,8 @@ public class StmtTest {
         ifTrue.execute(state);
         assertEquals(thenStmt, state.getExeStack().pop());
 
-
         IStmt ifFalse = new IfStmt(new ValueExp(new BoolValue(false)), thenStmt, elseStmt);
-            ifFalse.execute(state);
+        ifFalse.execute(state);
         assertEquals(elseStmt, state.getExeStack().pop());
 
         IStmt ifInvalid = new IfStmt(new ValueExp(new IntValue(5)), thenStmt, elseStmt);
@@ -103,7 +103,8 @@ public class StmtTest {
                 new VarDeclStmt("v", new IntType()),
                 new AssignStmt("v", new ValueExp(new BoolValue(true)))
         );
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex);
+
+        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 

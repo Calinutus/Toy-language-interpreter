@@ -31,8 +31,8 @@ public class MyList<T> implements IList<T>{
 
 
     @Override
-    public List<T> getContent(){
-        return list;
+    public List<T> toList(){
+        return List.copyOf(list);
     }
 
     @Override
