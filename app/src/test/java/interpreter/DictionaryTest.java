@@ -3,7 +3,11 @@ package interpreter;
 import interpreter.exceptions.ADTException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.value.IValue;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -44,5 +48,28 @@ public class DictionaryTest {
     void testUpdateOnNonExistentKey(){
         IDictionary<Integer , String> dict = new MyDictionary<>();
         assertThrows(ADTException.class,() ->{dict.update(1 , "a");});
+    }
+
+    @Test
+    void testRemove() throws ADTException{
+        IDictionary<String , Integer> dict = new MyDictionary<>();
+        dict.put("a" , 111);
+        assertTrue(dict.isDefined("a"));
+
+        dict.remove("a");
+        assertFalse(dict.isDefined("a"));
+        assertThrows(ADTException.class , () -> {dict.remove("a");});
+    }
+
+    @Test
+    void testMap(){
+        IDictionary<String , Integer> dict = new MyDictionary<>();
+        dict.put("k1" , 1);
+        dict.put("k2" , 2);
+
+        Map<String , Integer> map = dict.toMap();
+        assertEquals(2 , map.size());
+        assertEquals(1 , map.get("k1"));
+        assertEquals(2 , map.get("k2"));
     }
 }
