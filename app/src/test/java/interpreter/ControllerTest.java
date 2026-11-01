@@ -4,9 +4,6 @@ import interpreter.controller.Controller;
 import interpreter.exceptions.ADTException;
 import interpreter.exceptions.MyException;
 import interpreter.model.PrgState;
-import interpreter.model.adt.MyDictionary;
-import interpreter.model.adt.MyList;
-import interpreter.model.adt.MyStack;
 import interpreter.model.exp.ArithExp;
 import interpreter.model.exp.ArithOp;
 import interpreter.model.exp.ValueExp;
@@ -31,7 +28,7 @@ public class ControllerTest {
                 new CompStmt(new AssignStmt("v", new ValueExp(new IntValue(2))),
                         new PrintStmt(new VarExp("v"))));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex1);
+        PrgState state = PrgState.of(ex1);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -57,7 +54,7 @@ public class ControllerTest {
                                                 new ValueExp(new IntValue(1)))),
                                         new PrintStmt(new VarExp("b"))))));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex2);
+        PrgState state = PrgState.of(ex2);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -81,7 +78,7 @@ public class ControllerTest {
                                         new AssignStmt("v", new ValueExp(new IntValue(3)))),
                                         new PrintStmt(new VarExp("v"))))));
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), ex3);
+        PrgState state = PrgState.of(ex3);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -107,7 +104,7 @@ public class ControllerTest {
                 )
         );
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>(), divisionByZero);
+        PrgState state = PrgState.of(divisionByZero);
         IRepository repo = new Repository(state);
         Controller controller = new Controller(repo);
 
@@ -116,7 +113,7 @@ public class ControllerTest {
 
     @Test
     void testOneStepEmptyStackThrowsException() throws ADTException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyDictionary<>() , new NopStmt());
+        PrgState state = PrgState.of(new NopStmt());
         state.getExeStack().pop();
 
         IRepository repo = new Repository(state);
