@@ -134,4 +134,24 @@ class ExpTest {
         IDictionary<String, IValue> symTable = new MyDictionary<>();
         assertThrows(MyException.class, () -> exp.eval(symTable));
     }
+
+    @Test
+    void testRelationalExpressions() throws MyException {
+        IDictionary<String, IValue> symTable = new MyDictionary<>();
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.LT, new ValueExp(new IntValue(3)), new ValueExp(new IntValue(5))).eval(symTable));
+        assertEquals(new BoolValue(false), new RelationalExp(Relop.LT, new ValueExp(new IntValue(5)), new ValueExp(new IntValue(3))).eval(symTable));
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.LE, new ValueExp(new IntValue(5)), new ValueExp(new IntValue(5))).eval(symTable));
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.LE, new ValueExp(new IntValue(3)), new ValueExp(new IntValue(5))).eval(symTable));
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.EQ, new ValueExp(new IntValue(4)), new ValueExp(new IntValue(4))).eval(symTable));
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.NE, new ValueExp(new IntValue(4)), new ValueExp(new IntValue(5))).eval(symTable));
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.GT, new ValueExp(new IntValue(7)), new ValueExp(new IntValue(2))).eval(symTable));
+        assertEquals(new BoolValue(true), new RelationalExp(Relop.GE, new ValueExp(new IntValue(7)), new ValueExp(new IntValue(7))).eval(symTable));
+    }
+
+    @Test
+    void testRelationalNonIntegerOperandThrows() {
+        IExp exp = new RelationalExp(Relop.LT, new ValueExp(new IntValue(5)), new ValueExp(new BoolValue(true)));
+        IDictionary<String, IValue> symTable = new MyDictionary<>();
+        assertThrows(ExpressionException.class, () -> exp.eval(symTable));
+    }
 }
