@@ -18,6 +18,7 @@ application {
 }
 tasks.named<JavaExec>("run") {
     standardInput = System.`in` // keyboard input for the text menu
+    workingDir = rootDir
 }
 tasks.named<Test>("test") {
     useJUnitPlatform()
