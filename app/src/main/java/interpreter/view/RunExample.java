@@ -2,24 +2,23 @@ package interpreter.view;
 
 import interpreter.controller.Controller;
 import interpreter.exceptions.MyException;
-import interpreter.model.PrgState;
-import interpreter.model.stmt.IStmt;
-import interpreter.repository.IRepository;
-import interpreter.repository.Repository;
 
 public class RunExample extends Command{
-    private Controller controller;
+    private final Controller controller;
+    private boolean executed = false;
 
-    public RunExample(String key , String description , IStmt stmt){
-        super(key , description);
-        PrgState state = PrgState.of(stmt);
-        IRepository repo =new Repository(state , "log" + key + ".txt");
-        this.controller = new Controller(repo);
-        this.controller.setDisplayFlag(true);
+    public RunExample(String key , String description , Controller controller){
+        super(key, description);
+        this.controller = controller;
     }
 
     @Override
     public void execute(){
+        if(executed){
+            System.out.println("This example has already been executed");
+            return;
+        }
+        executed = true;
         try{
             controller.allStep();
         }catch (MyException e){
