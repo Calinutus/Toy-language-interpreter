@@ -16,10 +16,16 @@ import interpreter.model.value.IntValue;
 import interpreter.repository.IRepository;
 import interpreter.repository.Repository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerTest {
+
+    @TempDir
+    Path dir;
 
     @Test
     void testExample1() throws MyException {
@@ -29,7 +35,7 @@ public class ControllerTest {
                         new PrintStmt(new VarExp("v"))));
 
         PrgState state = PrgState.of(ex1);
-        IRepository repo = new Repository(state);
+        IRepository repo = new Repository(state, dir.resolve("log1.txt").toString());
         Controller controller = new Controller(repo);
 
         controller.allStep();
@@ -55,7 +61,7 @@ public class ControllerTest {
                                         new PrintStmt(new VarExp("b"))))));
 
         PrgState state = PrgState.of(ex2);
-        IRepository repo = new Repository(state);
+        IRepository repo = new Repository(state, dir.resolve("log2.txt").toString());
         Controller controller = new Controller(repo);
 
         controller.allStep();
@@ -79,7 +85,7 @@ public class ControllerTest {
                                         new PrintStmt(new VarExp("v"))))));
 
         PrgState state = PrgState.of(ex3);
-        IRepository repo = new Repository(state);
+        IRepository repo = new Repository(state, dir.resolve("log3.txt").toString());
         Controller controller = new Controller(repo);
 
         controller.allStep();
@@ -105,7 +111,7 @@ public class ControllerTest {
         );
 
         PrgState state = PrgState.of(divisionByZero);
-        IRepository repo = new Repository(state);
+        IRepository repo = new Repository(state, dir.resolve("log_div.txt").toString());
         Controller controller = new Controller(repo);
 
         assertThrows(MyException.class, () -> {controller.allStep();});
@@ -116,7 +122,7 @@ public class ControllerTest {
         PrgState state = PrgState.of(new NopStmt());
         state.getExeStack().pop();
 
-        IRepository repo = new Repository(state);
+        IRepository repo = new Repository(state, dir.resolve("log_empty.txt").toString());
         Controller controller = new Controller(repo);
 
         assertThrows(MyException.class, () -> controller.oneStep(state));

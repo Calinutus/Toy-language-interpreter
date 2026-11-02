@@ -13,7 +13,7 @@ public class RunExample extends Command{
     public RunExample(String key , String description , IStmt stmt){
         super(key , description);
         PrgState state = PrgState.of(stmt);
-        IRepository repo =new Repository(state);
+        IRepository repo =new Repository(state , "log" + key + ".txt");
         this.controller = new Controller(repo);
         this.controller.setDisplayFlag(true);
     }

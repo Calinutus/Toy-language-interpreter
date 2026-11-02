@@ -16,10 +16,16 @@ import interpreter.model.value.IntValue;
 import interpreter.repository.IRepository;
 import interpreter.repository.Repository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StmtTest {
+
+    @TempDir
+    Path dir;
 
     @Test
     void testNopStmt() throws MyException {
@@ -105,7 +111,7 @@ public class StmtTest {
                 new AssignStmt("v", new ValueExp(new BoolValue(true)))
         );
         PrgState state = PrgState.of(ex);
-        IRepository repo = new Repository(state);
+        IRepository repo = new Repository(state, dir.resolve("log_stmt.txt").toString());
         Controller controller = new Controller(repo);
 
         assertThrows(MyException.class, controller::allStep);
