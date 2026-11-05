@@ -10,8 +10,9 @@ public class Controller {
     private IRepository repo;
     private boolean displayFlag = false;
 
-    public Controller(IRepository repo) {
+    public Controller(IRepository repo , boolean displayFlag) {
         this.repo = repo;
+        this.displayFlag = displayFlag;
     }
 
     public void setDisplayFlag(boolean value) {

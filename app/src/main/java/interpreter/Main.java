@@ -27,7 +27,7 @@ public class Main {
         for (int i = 0; i < programs.size(); i++) {
             IStmt program = programs.get(i);
             var repo = new Repository(PrgState.of(program), "log" + (i + 1) + ".txt");
-            var controller = new Controller(repo);
+            var controller = new Controller(repo , true);
             controller.setDisplayFlag(true);
 
             menu.addCommand(new RunExample(

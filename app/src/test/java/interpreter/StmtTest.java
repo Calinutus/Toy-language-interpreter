@@ -112,7 +112,7 @@ public class StmtTest {
         );
         PrgState state = PrgState.of(ex);
         IRepository repo = new Repository(state, dir.resolve("log_stmt.txt").toString());
-        Controller controller = new Controller(repo);
+        Controller controller = new Controller(repo , false);
 
         assertThrows(MyException.class, controller::allStep);
     }
