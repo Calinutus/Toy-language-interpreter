@@ -17,11 +17,6 @@ public class Repository implements IRepository {
     public Repository(PrgState initialState, String logFilePath) {
         states.add(initialState);
         this.logFilePath = logFilePath;
-
-        try (var logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, false)))) {
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
