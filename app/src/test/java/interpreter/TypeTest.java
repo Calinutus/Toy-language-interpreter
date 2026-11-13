@@ -1,14 +1,10 @@
 package interpreter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import interpreter.model.type.BoolType;
-import interpreter.model.type.IType;
-import interpreter.model.type.IntType;
-import interpreter.model.type.StringType;
-import interpreter.model.value.BoolValue;
-import interpreter.model.value.IValue;
-import interpreter.model.value.IntValue;
-import interpreter.model.value.StringValue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import interpreter.model.type.*;
+import interpreter.model.value.*;
 import org.junit.jupiter.api.Test;
 
 class TypeTest {
@@ -43,5 +39,26 @@ class TypeTest {
         assertEquals("int" , intType.toString());
         assertEquals("bool" , boolType.toString());
         assertEquals("string" , stringType.toString());
+    }
+
+    @Test
+    void typeRefTypeDefaultValue(){
+        IType intType = new IntType();
+        RefType refType = new RefType(intType);
+
+        IValue defaultValue = refType.defaultValue();
+
+        assertEquals(new RefValue(0 , intType) , defaultValue);
+        assertEquals(refType , defaultValue.getType());
+    }
+
+    @Test
+    void nestedRefTypesEquality(){
+        RefType simpleRef = new RefType(new IntType());
+        RefType ref1 = new RefType(new RefType(new IntType()));
+        RefType ref2 = new RefType(new RefType(new IntType()));
+
+        assertEquals(ref1, ref2);
+        assertNotEquals(ref1 , simpleRef);
     }
 }
