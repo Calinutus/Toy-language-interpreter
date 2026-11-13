@@ -8,10 +8,7 @@ import interpreter.model.adt.MyDictionary;
 import interpreter.model.adt.MyHeap;
 import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
-import interpreter.model.exp.RelationalExp;
-import interpreter.model.exp.Relop;
-import interpreter.model.exp.ValueExp;
-import interpreter.model.exp.VarExp;
+import interpreter.model.exp.*;
 import interpreter.model.stmt.*;
 import interpreter.model.type.IntType;
 import interpreter.model.value.BoolValue;
@@ -191,5 +188,42 @@ public class StmtTest {
         controller.allStep();
 
         assertTrue(state.getOut().isEmpty());
+    }
+
+    @Test
+    void testWhileLoopSeveralTimes() throws MyException {
+        // v = 3; while (v > 0) { print(v); v = v - 1; }
+        IStmt ex = new CompStmt(
+                new VarDeclStmt("v", new IntType()),
+                new CompStmt(
+                        new AssignStmt("v", new ValueExp(new IntValue(3))),
+                        new CompStmt(
+                                new WhileStmt(
+                                        new RelationalExp(Relop.GT, new VarExp("v"), new ValueExp(new IntValue(0))),
+                                        new CompStmt(
+                                                new PrintStmt(new VarExp("v")),
+                                                new AssignStmt("v", new ArithExp(
+                                                        ArithOp.SUB,
+                                                        new VarExp("v"),
+                                                        new ValueExp(new IntValue(1))
+                                                ))
+                                        )
+                                ),
+                                new NopStmt()
+                        )
+                )
+        );
+
+        PrgState state = PrgState.of(ex);
+        IRepository repo = new Repository(state, dir.resolve("log_while_several.txt").toString());
+        Controller controller = new Controller(repo, false);
+        controller.allStep();
+
+
+        var out = state.getOut();
+        assertEquals(3, out.size());
+        assertEquals(new IntValue(3), out.get(0));
+        assertEquals(new IntValue(2), out.get(1));
+        assertEquals(new IntValue(1), out.get(2));
     }
 }
