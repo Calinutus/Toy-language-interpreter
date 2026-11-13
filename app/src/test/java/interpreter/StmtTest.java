@@ -8,7 +8,10 @@ import interpreter.model.adt.MyDictionary;
 import interpreter.model.adt.MyHeap;
 import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
+import interpreter.model.exp.RelationalExp;
+import interpreter.model.exp.Relop;
 import interpreter.model.exp.ValueExp;
+import interpreter.model.exp.VarExp;
 import interpreter.model.stmt.*;
 import interpreter.model.type.IntType;
 import interpreter.model.value.BoolValue;
@@ -123,5 +126,70 @@ public class StmtTest {
         Controller controller = new Controller(repo , false);
 
         assertThrows(MyException.class, controller::allStep);
+    }
+
+    @Test
+    void testWhileConditionTruePushesStatements() throws MyException {
+        IStmt body = new PrintStmt(new ValueExp(new IntValue(1)));
+        WhileStmt whileStmt = new WhileStmt(new ValueExp(new BoolValue(true)), body);
+
+        PrgState state = PrgState.of(new NopStmt());
+
+        state.getExeStack().pop();
+
+        whileStmt.execute(state);
+
+        var exeStack = state.getExeStack();
+        assertFalse(exeStack.isEmpty());
+        assertEquals(body, exeStack.pop());
+        assertEquals(whileStmt, exeStack.pop());
+        assertTrue(exeStack.isEmpty());
+    }
+
+    @Test
+    void testWhileConditionFalseDoesNothing() throws MyException {
+        IStmt body = new PrintStmt(new ValueExp(new IntValue(1)));
+        WhileStmt whileStmt = new WhileStmt(new ValueExp(new BoolValue(false)), body);
+
+        PrgState state = PrgState.of(new NopStmt());
+        state.getExeStack().pop();
+
+        whileStmt.execute(state);
+        assertTrue(state.getExeStack().isEmpty());
+    }
+
+    @Test
+    void testWhileConditionTypeMismatch() {
+        IStmt body = new PrintStmt(new ValueExp(new IntValue(1)));
+        WhileStmt whileStmt = new WhileStmt(new ValueExp(new IntValue(10)), body);
+
+        PrgState state = PrgState.of(new NopStmt());
+
+        assertThrows(MyException.class, () -> whileStmt.execute(state));
+    }
+
+    @Test
+    void testWhileLoopZeroTimes() throws MyException {
+        // v = 5; while (v < 5) { print(v); v = v + 1; }
+        IStmt ex = new CompStmt(
+                new VarDeclStmt("v", new IntType()),
+                new CompStmt(
+                        new AssignStmt("v", new ValueExp(new IntValue(5))),
+                        new CompStmt(
+                                new WhileStmt(
+                                        new RelationalExp(Relop.LT, new VarExp("v"), new ValueExp(new IntValue(5))),
+                                        new PrintStmt(new VarExp("v"))
+                                ),
+                                new NopStmt()
+                        )
+                )
+        );
+
+        PrgState state = PrgState.of(ex);
+        IRepository repo = new Repository(state, dir.resolve("log_while_zero.txt").toString());
+        Controller controller = new Controller(repo, false);
+        controller.allStep();
+
+        assertTrue(state.getOut().isEmpty());
     }
 }
