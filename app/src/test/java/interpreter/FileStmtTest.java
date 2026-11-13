@@ -66,7 +66,7 @@ class FileStmtTest {
     @Test
     void closeFileRemovesItFromFileTable() throws MyException {
         new OpenRFileStmt(file).execute(state);
-        var strVal = (StringValue) file.eval(state.getSymTable());
+        var strVal = (StringValue) file.eval(state.getSymTable(), state.getHeap());
         assertTrue(state.getFileTable().isDefined(strVal));
 
         new CloseRFileStmt(file).execute(state);

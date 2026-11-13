@@ -80,7 +80,6 @@ public class PrgState {
         log.append("SymTable:\n").append(symTable.toString()).append("\n");
         log.append("Out:\n").append(out.toString()).append("\n");
         log.append("FileTable:\n").append(fileTable.toString()).append("\n");
-
         log.append("Heap:\n");
         new TreeMap<>(heap.getContent()).forEach((addr, val) ->
                 log.append(addr).append(" --> ").append(val).append("\n")
