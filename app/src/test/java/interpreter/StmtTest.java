@@ -5,6 +5,7 @@ import interpreter.exceptions.MyException;
 import interpreter.model.PrgState;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
 import interpreter.model.exp.ValueExp;
@@ -51,8 +52,15 @@ public class StmtTest {
     void testAssignStmt() throws MyException {
         IDictionary<String, IValue> symTable = new MyDictionary<>();
         symTable.put("v", new IntValue(0));
-        // Keeps 5-arg constructor here because we explicitly need to inject a custom pre-populated symTable
-        PrgState testState = new PrgState(new MyStack<>(), symTable, new MyList<>(), new MyDictionary<>(), new NopStmt());
+
+        PrgState testState = new PrgState(
+                new MyStack<>(),
+                symTable,
+                new MyList<>(),
+                new MyDictionary<>(),
+                new MyHeap(),
+                new NopStmt()
+        );
 
         IStmt assign = new AssignStmt("v", new ValueExp(new IntValue(42)));
         assign.execute(testState);

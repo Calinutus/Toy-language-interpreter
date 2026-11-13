@@ -19,15 +19,18 @@ public class PrgStateTest {
         IDictionary<String, IValue> symTable = new MyDictionary<>();
         IList<IValue> out = new MyList<>();
         IDictionary<StringValue, BufferedReader> fileTable = new MyDictionary<>();
+        IHeap heap = new MyHeap();
 
         IStmt dummyStmt = state -> state;
 
-        PrgState state = new PrgState(stack, symTable, out, fileTable, dummyStmt);
+
+        PrgState state = new PrgState(stack, symTable, out, fileTable, heap, dummyStmt);
 
         assertFalse(state.getExeStack().isEmpty());
         assertNotNull(state.getSymTable());
         assertNotNull(state.getOut());
         assertNotNull(state.getFileTable());
+        assertNotNull(state.getHeap());
         assertEquals(dummyStmt, state.getOriginalProgram());
     }
 
@@ -40,6 +43,7 @@ public class PrgStateTest {
         assertNotNull(state.getSymTable());
         assertNotNull(state.getOut());
         assertNotNull(state.getFileTable());
+        assertNotNull(state.getHeap()); // <-- Verify heap is initialized via factory
         assertEquals(dummyStmt, state.getOriginalProgram());
     }
 }
