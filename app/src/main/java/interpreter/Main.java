@@ -18,7 +18,12 @@ public class Main {
                 Examples.EX2,
                 Examples.EX3,
                 Examples.EX4,
-                Examples.EX5
+                Examples.EX5,
+                Examples.EX6,
+                Examples.EX7,
+                Examples.EX8,
+                Examples.EX9,
+                Examples.EX10
         );
 
         TextMenu menu = new TextMenu();
